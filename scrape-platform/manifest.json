@@ -1,0 +1,53 @@
+{
+  "manifest_version": 3,
+  "name": "ScrapePlatform",
+  "version": "1.0.0",
+  "description": "Production-grade modular web scraping platform with AI-assisted extraction",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting",
+    "sidePanel",
+    "tabs",
+    "webRequest",
+    "alarms",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background/service-worker.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/content-script.js"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "action": {
+    "default_title": "ScrapePlatform",
+    "default_icon": {
+      "16": "ui/icons/icon16.png",
+      "48": "ui/icons/icon48.png",
+      "128": "ui/icons/icon128.png"
+    }
+  },
+  "side_panel": {
+    "default_path": "ui/sidepanel.html"
+  },
+  "icons": {
+    "16": "ui/icons/icon16.png",
+    "48": "ui/icons/icon48.png",
+    "128": "ui/icons/icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["content/*.js", "ai/*.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
