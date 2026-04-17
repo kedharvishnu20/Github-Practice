@@ -7,43 +7,17 @@ dist/
 build/
 target/
 
-# Python specific
+# Python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
-.Python
-env/
-venv/
+*.py.class
 .venv/
-.ENV
-pip-log.txt
-pip-delete-this-directory.txt
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.log
-*.tmp
-*.swp
-*.swo
-.DS_Store
-Thumbs.db
-
-# Editor/IDE files
-.vscode/
-.idea/
-*.swp
-*.swo
-*.tmp
-
-# Environment variables
+venv/
 .env
 .env.local
-*.env.*
+.env.*
 
 # Logs
 *.log
@@ -51,15 +25,27 @@ Thumbs.db
 # Coverage
 coverage/
 htmlcov/
-*.coverage
+.coverage
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*.tmp
+
+# System
+.DS_Store
+Thumbs.db
 
 # MyPy
 .mypy_cache/
-.dmypy.json
-dmypy.json
 
-# PyTest
+# Pytest
 .pytest_cache/
+
+# Gradle
+.gradle/
 
 # Compressed files
 *.zip
