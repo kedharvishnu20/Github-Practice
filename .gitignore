@@ -1,7 +1,8 @@
+```
 # Environment
 .env
 .env.local
-*.env.*
+.env.*
 
 # Dependencies
 node_modules/
@@ -26,24 +27,24 @@ target/
 *.obj
 *.out
 
-# Editors
+# Editor/IDE files
 .vscode/
 .idea/
 *.swp
 *.swo
-
-# System files
-.DS_Store
-Thumbs.db
-
-# Logs and temp files
-*.log
 *.tmp
+
+# Logs
+*.log
 
 # Coverage
 coverage/
 htmlcov/
 .coverage
+
+# System files
+.DS_Store
+Thumbs.db
 
 # Compressed files
 *.zip
@@ -68,3 +69,4 @@ htmlcov/
 *.tar.bz2
 *.tar.xz
 *.tar.zst
+```
