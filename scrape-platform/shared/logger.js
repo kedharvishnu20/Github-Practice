@@ -69,7 +69,7 @@ class Logger {
    */
   _output(entry) {
     // Check log level
-    if (this.levels[level] < this.levels[this.logLevel]) {
+    if (this.levels[entry.level] < this.levels[this.logLevel]) {
       return;
     }
 

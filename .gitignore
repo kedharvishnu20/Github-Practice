@@ -1,1 +1,41 @@
-Nothing should be ignored in this case, as the only change is adding an icon image file (.png), which is a source asset that should be tracked in version control.
+```
+# Dependencies
+node_modules/
+
+# Editors
+.vscode/
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-selfcheck.json
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.git/
+
+# Build directories
+build/
+dist/
+```
