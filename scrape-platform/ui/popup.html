@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScrapePlatform</title>
+  <style>
+    body {
+      width: 320px;
+      padding: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    h1 {
+      font-size: 18px;
+      margin: 0 0 16px 0;
+      color: #333;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 8px;
+      border: none;
+      border-radius: 6px;
+      background: #4CAF50;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    button.secondary {
+      background: #2196F3;
+    }
+    button.secondary:hover {
+      background: #1976D2;
+    }
+    .shortcut {
+      font-size: 12px;
+      color: #666;
+      text-align: center;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #eee;
+    }
+    kbd {
+      background: #f0f0f0;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔍 ScrapePlatform</h1>
+  
+  <button id="btn-open-panel">Open Side Panel</button>
+  <button id="btn-analyze" class="secondary">Analyze Current Page</button>
+  
+  <div class="shortcut">
+    Or press <kbd>Ctrl+Shift+Y</kbd> to toggle panel
+  </div>
+
+  <script>
+    document.getElementById('btn-open-panel').addEventListener('click', async () => {
+      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      await chrome.sidePanel.open({ tabId: tab.id });
+      window.close();
+    });
+
+    document.getElementById('btn-analyze').addEventListener('click', async () => {
+      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      await chrome.sidePanel.open({ tabId: tab.id });
+      
+      // Send analyze message to content script
+      try {
+        await chrome.tabs.sendMessage(tab.id, { type: 'ANALYZE_PAGE' });
+      } catch (e) {
+        console.log('Content script not ready yet');
+      }
+      
+      window.close();
+    });
+  </script>
+</body>
+</html>

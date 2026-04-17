@@ -31,6 +31,7 @@
   ],
   "action": {
     "default_title": "ScrapePlatform",
+    "default_popup": "ui/popup.html",
     "default_icon": {
       "16": "ui/icons/icon16.png",
       "48": "ui/icons/icon48.png",
