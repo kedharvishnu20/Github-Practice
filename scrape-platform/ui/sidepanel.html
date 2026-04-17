@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScrapePlatform</title>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <header class="header">
+      <h1>🔍 ScrapePlatform</h1>
+      <div class="header-actions">
+        <button id="btn-settings" class="icon-btn" title="Settings">⚙️</button>
+      </div>
+    </header>
+
+    <!-- Tabs -->
+    <nav class="tabs">
+      <button class="tab active" data-tab="extract">Extract</button>
+      <button class="tab" data-tab="pipeline">Pipeline</button>
+      <button class="tab" data-tab="jobs">Jobs</button>
+      <button class="tab" data-tab="logs">Logs</button>
+    </nav>
+
+    <!-- Extract Tab -->
+    <section id="tab-extract" class="tab-content active">
+      <div class="panel">
+        <h2>Quick Extract</h2>
+        
+        <div class="form-group">
+          <label>Extraction Type</label>
+          <select id="extract-type">
+            <option value="links">Links</option>
+            <option value="images">Images</option>
+            <option value="tables">Tables</option>
+            <option value="article">Article</option>
+            <option value="custom">Custom Schema</option>
+          </select>
+        </div>
+
+        <div id="custom-schema-container" class="form-group hidden">
+          <label>JSON Schema</label>
+          <textarea id="custom-schema" rows="6" placeholder='{"title": "h1", "content": ".article-body"}'></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="use-llm"> Use AI Extraction (LLM)
+          </label>
+        </div>
+
+        <button id="btn-extract" class="btn btn-primary">Extract Data</button>
+      </div>
+
+      <div class="panel results-panel">
+        <div class="results-header">
+          <h3>Results</h3>
+          <div class="results-actions">
+            <button id="btn-export-json" class="btn-sm">JSON</button>
+            <button id="btn-export-csv" class="btn-sm">CSV</button>
+            <button id="btn-clear-results" class="btn-sm">Clear</button>
+          </div>
+        </div>
+        <div id="extract-results" class="results-container">
+          <p class="placeholder">No data extracted yet</p>
+        </div>
+        <div id="extract-stats" class="stats"></div>
+      </div>
+    </section>
+
+    <!-- Pipeline Tab -->
+    <section id="tab-pipeline" class="tab-content">
+      <div class="panel">
+        <h2>Pipeline Builder</h2>
+        
+        <div class="form-group">
+          <label>Pipeline Name</label>
+          <input type="text" id="pipeline-name" placeholder="My Pipeline">
+        </div>
+
+        <div class="pipeline-steps" id="pipeline-steps">
+          <!-- Steps will be added here -->
+        </div>
+
+        <div class="add-step-container">
+          <select id="step-type-select">
+            <option value="navigate">Navigate</option>
+            <option value="extract">Extract</option>
+            <option value="click">Click</option>
+            <option value="paginate">Paginate</option>
+            <option value="wait">Wait</option>
+            <option value="transform">Transform</option>
+            <option value="export">Export</option>
+          </select>
+          <button id="btn-add-step" class="btn">+ Add Step</button>
+        </div>
+
+        <div class="pipeline-actions">
+          <button id="btn-save-pipeline" class="btn">Save Pipeline</button>
+          <button id="btn-run-pipeline" class="btn btn-primary">Run Pipeline</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Jobs Tab -->
+    <section id="tab-jobs" class="tab-content">
+      <div class="panel">
+        <h2>Active Jobs</h2>
+        <div id="active-jobs-list" class="jobs-list">
+          <p class="placeholder">No active jobs</p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Job History</h2>
+        <div id="job-history-list" class="jobs-list">
+          <p class="placeholder">No job history</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Logs Tab -->
+    <section id="tab-logs" class="tab-content">
+      <div class="panel">
+        <div class="logs-header">
+          <h2>Logs</h2>
+          <div class="logs-actions">
+            <select id="log-level-filter">
+              <option value="all">All Levels</option>
+              <option value="error">Errors</option>
+              <option value="warn">Warnings</option>
+              <option value="info">Info</option>
+              <option value="debug">Debug</option>
+            </select>
+            <button id="btn-clear-logs" class="btn-sm">Clear</button>
+          </div>
+        </div>
+        <div id="logs-container" class="logs-container">
+          <p class="placeholder">No logs yet</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Settings</h2>
+          <button class="close-btn" id="btn-close-settings">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Rate Limit (requests/minute)</label>
+            <input type="number" id="setting-rate-limit" value="60" min="1" max="300">
+          </div>
+          <div class="form-group">
+            <label>Max Concurrent Jobs</label>
+            <input type="number" id="setting-max-jobs" value="3" min="1" max="10">
+          </div>
+          <div class="form-group">
+            <label>Compliance Level</label>
+            <select id="setting-compliance">
+              <option value="strict">Strict</option>
+              <option value="warn">Warn</option>
+              <option value="ignore">Ignore</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>API Provider</label>
+            <select id="setting-api-provider">
+              <option value="openai">OpenAI</option>
+              <option value="anthropic">Anthropic</option>
+              <option value="google">Google AI</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>API Key</label>
+            <input type="password" id="setting-api-key" placeholder="Enter your API key">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="btn-save-settings" class="btn btn-primary">Save Settings</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="sidepanel.js" type="module"></script>
+</body>
+</html>

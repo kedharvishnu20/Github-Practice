@@ -1,0 +1,104 @@
+{
+  "id": "sample-ecommerce-pipeline",
+  "name": "E-commerce Product Scraper",
+  "description": "Scrapes product listings from an e-commerce site with pagination",
+  "version": "1.0.0",
+  "createdAt": "2024-01-15T10:00:00Z",
+  "steps": [
+    {
+      "id": "step-1",
+      "type": "navigate",
+      "name": "Go to Products Page",
+      "config": {
+        "url": "https://example.com/products",
+        "waitUntil": "networkidle",
+        "timeout": 30000
+      },
+      "enabled": true
+    },
+    {
+      "id": "step-2",
+      "type": "wait",
+      "name": "Wait for Products to Load",
+      "config": {
+        "selector": ".product-grid",
+        "duration": 2000
+      },
+      "enabled": true
+    },
+    {
+      "id": "step-3",
+      "type": "extract",
+      "name": "Extract Product Data",
+      "config": {
+        "schema": {
+          "name": ".product-name",
+          "price": ".product-price",
+          "rating": ".product-rating",
+          "imageUrl": ".product-image img@src",
+          "url": ".product-link@href"
+        },
+        "method": "css",
+        "multiple": true,
+        "containerSelector": ".product-item"
+      },
+      "enabled": true
+    },
+    {
+      "id": "step-4",
+      "type": "paginate",
+      "name": "Handle Pagination",
+      "config": {
+        "strategy": "next",
+        "selector": ".pagination .next",
+        "maxPages": 10
+      },
+      "enabled": true
+    },
+    {
+      "id": "step-5",
+      "type": "transform",
+      "name": "Clean and Transform Data",
+      "config": {
+        "operation": "map",
+        "script": `item => ({
+          ...item,
+          price: parseFloat(item.price?.replace('$', '') || 0),
+          rating: parseFloat(item.rating) || 0,
+          scrapedAt: new Date().toISOString()
+        })`
+      },
+      "enabled": true
+    },
+    {
+      "id": "step-6",
+      "type": "export",
+      "name": "Export Results",
+      "config": {
+        "format": "json",
+        "filename": "products-export"
+      },
+      "enabled": true
+    }
+  ],
+  "settings": {
+    "rateLimit": {
+      "requestsPerMinute": 60,
+      "delayBetweenRequests": 1000
+    },
+    "retry": {
+      "maxAttempts": 3,
+      "backoffMultiplier": 2
+    },
+    "compliance": {
+      "level": "strict",
+      "respectRobotsTxt": true,
+      "detectPII": true
+    }
+  },
+  "metadata": {
+    "author": "ScrapePlatform",
+    "tags": ["ecommerce", "products", "pagination"],
+    "category": "shopping"
+  }
+}
