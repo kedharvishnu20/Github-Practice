@@ -487,6 +487,25 @@ class SidePanelApp {
         break;
       case 'PAGE_ANALYZED':
         this._showNotification('Page analyzed!', 'success');
+        // Store and display the analysis results
+        if (message.payload?.analysis) {
+          this.extractedData = [message.payload.analysis];
+          this._renderResults();
+        }
+        break;
+      case 'SELECTION_SCRAPED':
+        this._showNotification('Selection scraped!', 'success');
+        if (message.payload?.text) {
+          this.extractedData = [{ text: message.payload.text, url: message.payload.url }];
+          this._renderResults();
+        }
+        break;
+      case 'LINK_SCRAPED':
+        this._showNotification('Link scraped!', 'success');
+        if (message.payload?.url) {
+          this.extractedData = [{ url: message.payload.url, text: message.payload.text || '' }];
+          this._renderResults();
+        }
         break;
     }
   }

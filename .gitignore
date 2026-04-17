@@ -1,1 +1,48 @@
-Nothing should be ignored based on the provided file changes, as they only include source/config files (popup.html, manifest.json) without any build artifacts, dependencies, or temporary files.
+```
+# Dependencies
+node_modules/
+
+# Build artifacts
+dist/
+build/
+target/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.py.class
+.Python
+env/
+venv/
+.venv/
+.ENV
+.python-version
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+*.pot
+*.po
+*~
+pyrightconfig.json
+mypy.ini
+.pytest_cache/
+.hypothesis/
+.eggs/
+*.egg-info/
+.installed.cfg
+.pep8speaks.yml
+.bandit
+.bumpversion.cfg
+.isort.cfg
+.pyup.yml
+.safety-db.json
+```
