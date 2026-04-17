@@ -1,79 +1,108 @@
 # ScrapePlatform - Production-Grade Modular Web Scraping System
 
-## 📁 Project Structure
+A comprehensive, intelligent, and scalable web scraping platform that combines browser automation, DOM-based extraction, AI-assisted extraction, workflow pipelines, and resume/retry capabilities.
+
+## 🚀 Key Optimizations & New Features
+
+### Performance Enhancements
+- **Structured DOM Parser**: Converts HTML to XML-like format for reliable XPath/CSS queries
+- **Smart Selector Engine**: Auto-detects best extraction method (CSS/XPath/Structured)
+- **Multi-level Caching**: L1/L2 cache hierarchy with TTL and automatic eviction
+- **Batch Processing**: Queues and batches operations for efficiency
+- **Data Streaming**: Stream large datasets without loading into memory
+- **Compression Support**: Optional gzip compression for cached data
+- **Memory Monitoring**: Real-time heap usage tracking
+
+### New Modules Added
+
+1. **Structured DOM Parser** (`content/structured-dom-parser.js`)
+   - Converts messy HTML to clean XML-like tree structure
+   - Supports CSS-like queries on structured data
+   - Exports to HTML, XML, or JSON formats
+   - Built-in caching and performance metrics
+   - Handles malformed HTML gracefully
+
+2. **Smart Selector Engine** (`content/smart-selector-engine.js`)
+   - Auto-detects optimal extraction method based on selectors and page complexity
+   - Configurable fallback chain: CSS → XPath → Structured
+   - Batch extraction with concurrency control
+   - Success rate tracking per method
+   - Smart polling for dynamic content
+
+3. **Performance Optimizer** (`shared/performance-optimizer.js`)
+   - L1/L2 cache with automatic tiering based on size/priority
+   - Operation batching with configurable delays
+   - Memory monitoring with periodic snapshots
+   - Compression/decompression using Browser Compression API
+   - Memoization, throttling, and debouncing utilities
+   - Cached DOM queries with TTL
+
+4. **Plugin System** (`pipeline/plugin-system.js`)
+   - Dynamic registration of custom node types
+   - Hook system (beforeExecute, afterExecute, onError, onData)
+   - Plugin lifecycle management (onRegister, onUnregister)
+   - BasePlugin class for easy extension
+   - Plugin statistics and health monitoring
+
+5. **Data Streamer** (`data/streamer.js`)
+   - Streaming export for large datasets (no memory limits)
+   - Multiple formats: JSON, CSV, NDJSON
+   - Chunked processing with backpressure control
+   - IndexedDB storage backend support
+   - Async iterator support for consumption
+   - Transform-on-write capability
+
+## 📁 Complete Project Structure
 
 ```
 scrape-platform/
-├── manifest.json                 # Chrome Extension Manifest V3
-├── config/
-│   ├── settings.js               # Global configuration
-│   └── schemas.js                # Data schemas
+├── manifest.json                    # Chrome Extension Manifest V3
+├── README.md                        # This file
 ├── shared/
-│   ├── logger.js                 # Structured JSON logging
-│   ├── types.js                  # JSDoc type definitions
-│   ├── constants.js              # Shared constants
-│   └── utils.js                  # Utility functions
+│   ├── constants.js                 # Shared constants
+│   ├── logger.js                    # Structured JSON logging
+│   ├── utils.js                     # Utility functions
+│   └── performance-optimizer.js     # ⭐ NEW: Caching, batching, metrics
 ├── background/
-│   ├── service-worker.js         # Main background script
-│   ├── controller.js             # Central orchestration engine
-│   ├── rate-limiter.js           # Rate limiting
-│   ├── proxy-manager.js          # Proxy rotation
-│   ├── api-key-manager.js        # API key management
-│   └── job-scheduler.js          # Job scheduling
+│   ├── service-worker.js            # Main background script
+│   ├── controller.js                # Central orchestration engine
+│   ├── rate-limiter.js              # Rate limiting
+│   ├── proxy-manager.js             # Proxy rotation
+│   ├── api-key-manager.js           # Secure API key management
+│   └── job-scheduler.js             # Job scheduling & queuing
 ├── content/
-│   ├── content-script.js         # Main content script
-│   ├── extractor.js              # Smart DOM extractor
-│   ├── page-analyzer.js          # Page type detection
-│   ├── paginator.js              # Pagination handling
-│   ├── form-filler.js            # Form interaction
-│   └── captcha-detector.js       # CAPTCHA detection
+│   ├── content-script.js            # Page injection script
+│   ├── extractor.js                 # Smart DOM extractor (CSS/XPath)
+│   ├── page-analyzer.js             # Page type detection
+│   ├── paginator.js                 # Pagination handling
+│   ├── form-filler.js               # Form interaction
+│   ├── captcha-detector.js          # CAPTCHA detection
+│   ├── structured-dom-parser.js     # ⭐ NEW: XML-like DOM parsing
+│   └── smart-selector-engine.js     # ⭐ NEW: Auto method selection
 ├── ai/
-│   ├── llm-extractor.js          # LLM-based extraction
-│   ├── prompt-templates.js       # Prompt templates
-│   ├── dom-sanitizer.js          # DOM sanitization for LLM
-│   └── injection-protection.js   # Prompt injection protection
+│   ├── llm-extractor.js             # LLM-based extraction
+│   ├── prompt-templates.js          # Multi-provider templates
+│   ├── dom-sanitizer.js             # HTML sanitization
+│   └── injection-protection.js      # Prompt injection protection
 ├── pipeline/
-│   ├── compiler.js               # Pipeline compiler
-│   ├── engine.js                 # Execution engine
-│   ├── nodes.js                  # Node abstractions
-│   └── registry.js               # Node registry
-├── emitters/
-│   ├── nodejs-emitter.js         # Playwright Node.js emitter
-│   └── python-emitter.js         # Python emitter
+│   ├── nodes.js                     # Node abstractions (7 types)
+│   ├── engine.js                    # Pipeline execution engine
+│   └── plugin-system.js             # ⭐ NEW: Plugin architecture
 ├── checkpoint/
-│   ├── cursor-tracker.js         # Cursor tracking
-│   ├── row-buffer.js             # Row buffering
-│   └── job-checkpoint.js         # Job checkpoints
-├── data/
-│   ├── parsers.js                # Data parsers
-│   ├── transformers.js           # Data transformers
-│   └── exporters.js              # JSON/CSV exporters
+│   └── job-checkpoint.js            # Resume/retry system
 ├── ethics/
-│   ├── robots-parser.js          # robots.txt parser
-│   ├── pii-detector.js           # PII detection
-│   └── compliance-engine.js      # Compliance enforcement
-├── reliability/
-│   ├── retry-handler.js          # Exponential backoff
-│   ├── ua-rotator.js             # User-agent rotation
-│   └── playwright-fallback.js    # Playwright fallback
+│   ├── robots-parser.js             # robots.txt compliance
+│   └── pii-detector.js              # PII detection & redaction
+├── data/
+│   └── streamer.js                  # ⭐ NEW: Streaming exports
 ├── ui/
-│   ├── sidepanel.html            # Side panel UI
-│   ├── sidepanel.css             # Styles
-│   ├── sidepanel.js              # Side panel logic
-│   └── components/
-│       ├── pipeline-editor.js    # Visual pipeline editor
-│       ├── job-runner.js         # Job runner UI
-│       └── log-viewer.js         # Log viewer
-├── backend/
-│   ├── nodejs/
-│   │   ├── server.js             # Node.js backend
-│   │   └── scraper.js            # Node.js scraper service
-│   └── python/
-│       ├── server.py             # Python backend
-│       └── scraper.py            # Python scraper service
+│   ├── sidepanel.html               # Side panel UI
+│   ├── sidepanel.css                # Styles
+│   ├── sidepanel.js                 # UI logic
+│   └── icons/                       # Extension icons
 └── examples/
-    ├── sample-pipeline.json      # Sample pipeline
-    └── extraction-flow.js        # Example extraction flow
+    ├── sample-pipeline.json         # Example pipeline
+    └── extraction-flow.js           # Usage examples
 ```
 
 ## 🚀 Quick Start
